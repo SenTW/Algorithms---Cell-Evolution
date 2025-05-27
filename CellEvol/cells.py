@@ -49,6 +49,11 @@ class Cell:
         ])
         self.speed = BASE_SPEED * STAGE_SPEEDS[stage]
 
+    def evolve_to_stage(self, new_stage):
+        self.stage = new_stage
+        if new_stage in STAGE_SPEEDS:
+            self.speed = BASE_SPEED * STAGE_SPEEDS[new_stage]
+
     def get_pixel_position(self):
         return (
             int(self.grid_x * GRID_SIZE),
@@ -90,16 +95,19 @@ class Cell:
             
             if dist_squared < collision_threshold:
 
-                if self.stage < other.stage:
-                    self.to_be_removed = True
+                    if self.stage == 2 and other.stage == 1:
+                        self.evolve_to_stage(3)
+                        return
+
+                    if self.stage < other.stage:
+                        self.to_be_removed = True
+                        return
+
+                    if abs(dx) > abs(dy):
+                        self.direction = (-self.direction[0], self.direction[1])
+                    else:
+                        self.direction = (self.direction[0], -self.direction[1])
                     return
-                
-                # Calculate reflection vector
-                if abs(dx) > abs(dy):
-                    self.direction = (-self.direction[0], self.direction[1])
-                else:
-                    self.direction = (self.direction[0], -self.direction[1])
-                return  # Don't move this frame if collided
     
     # Update position if no collisions
         self.grid_x = new_x
