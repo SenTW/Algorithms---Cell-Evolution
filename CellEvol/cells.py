@@ -42,6 +42,7 @@ class Cell:
         self.grid_x = x
         self.grid_y = y
         self.stage = stage
+        self.to_be_removed = False
         self.direction = random.choice([
             (0, 1), (1, 0), (-1, 0), (0, -1),
             (1, 1), (-1, -1), (1, -1), (-1, 1)
@@ -88,6 +89,11 @@ class Cell:
             dist_squared = dx ** 2 + dy ** 2
             
             if dist_squared < collision_threshold:
+
+                if self.stage < other.stage:
+                    self.to_be_removed = True
+                    return
+                
                 # Calculate reflection vector
                 if abs(dx) > abs(dy):
                     self.direction = (-self.direction[0], self.direction[1])

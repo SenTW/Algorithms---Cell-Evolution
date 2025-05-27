@@ -49,6 +49,8 @@ def main():
         if simulation_running:
             for cell in cells:
                 cell.move(COLS, ROWS, cells)
+
+                cells = [cell for cell in cells if not cell.to_be_removed]
         
         for cell in cells:
             pixel_x, pixel_y = cell.get_pixel_position()
