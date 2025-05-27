@@ -47,11 +47,20 @@ def main():
         
         # Update and draw all cells
         if simulation_running:
+            newly_created_cells = [] # このフレームで生まれるセルを一時的に保存するリスト
+            
             for cell in cells:
-                cell.move(COLS, ROWS, cells)
+                # moveメソッドは新セルのリストを返すように変更された
+                new_cells_from_move = cell.move(COLS, ROWS, cells)
+                if new_cells_from_move:
+                    newly_created_cells.extend(new_cells_from_move)
 
-                cells = [cell for cell in cells if not cell.to_be_removed]
-        
+            # 最初に、消滅フラグが立ったセルをリストから除去する
+            cells = [cell for cell in cells if not cell.to_be_removed]
+            
+            # 次に、このフレームで新たに生成されたセルをリストに追加する
+            cells.extend(newly_created_cells)
+
         for cell in cells:
             pixel_x, pixel_y = cell.get_pixel_position()
             draw_cell_from_layout(screen, pixel_x, pixel_y, cell.stage)

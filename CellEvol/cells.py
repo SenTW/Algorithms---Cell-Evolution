@@ -95,20 +95,37 @@ class Cell:
             
             if dist_squared < collision_threshold:
 
+                    # 【新ルール: 分裂】自分がステージ3で、相手が弱い場合
+                    if self.stage == 3 and other.stage < 3:
+                        self.to_be_removed = True  # 自分は消滅
+                        # 相手のセルも消滅するが、それは相手のmove()呼び出し時に決定される
+
+                        # 新しいステージ1のセルを2つ生成する
+                        new_cells = [
+                            Cell(self.grid_x + 1, self.grid_y, 1),
+                            Cell(self.grid_x - 1, self.grid_y, 1)
+                        ]
+                        return new_cells  # 生成したセルのリストを返す
+
+                    # 【既存ルール: 成長】自分がステージ2で、相手がステージ1なら成長
                     if self.stage == 2 and other.stage == 1:
                         self.evolve_to_stage(3)
-                        return
+                        return []  # 何も生成しない
 
+                    # 【既存ルール: 消滅】自分が相手より弱いステージなら消滅
                     if self.stage < other.stage:
                         self.to_be_removed = True
-                        return
+                        return []  # 何も生成しない
 
+                    # 【既存ルール: 跳ね返り】
                     if abs(dx) > abs(dy):
                         self.direction = (-self.direction[0], self.direction[1])
                     else:
                         self.direction = (self.direction[0], -self.direction[1])
-                    return
+                    return []  # 何も生成しない
     
     # Update position if no collisions
         self.grid_x = new_x
         self.grid_y = new_y
+
+        return []
