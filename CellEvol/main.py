@@ -47,10 +47,12 @@ def main():
         
         # Update and draw all cells
         if simulation_running:
+            # 全てのセルを移動させる
             for cell in cells:
                 cell.move(COLS, ROWS, cells)
-
-                cells = [cell for cell in cells if not cell.to_be_removed]
+            
+            # 移動処理が完了してから、削除フラグが立ったセルを一括で除去
+            cells = [cell for cell in cells if not cell.to_be_removed]
         
         for cell in cells:
             pixel_x, pixel_y = cell.get_pixel_position()

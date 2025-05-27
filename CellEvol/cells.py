@@ -95,14 +95,18 @@ class Cell:
             
             if dist_squared < collision_threshold:
 
+                    # ステージ2がステージ1を吸収してステージ3に成長
                     if self.stage == 2 and other.stage == 1:
                         self.evolve_to_stage(3)
+                        other.to_be_removed = True  # 吸収されたセルを削除
                         return
 
+                    # 自分より強いセルに当たったら消滅
                     if self.stage < other.stage:
                         self.to_be_removed = True
                         return
 
+                    # 同じステージまたは自分が強い場合は跳ね返り
                     if abs(dx) > abs(dy):
                         self.direction = (-self.direction[0], self.direction[1])
                     else:
