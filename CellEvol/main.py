@@ -112,6 +112,7 @@ def main():
         
         # Update and draw all cells
         if simulation_running:
+
             newly_created_cells = []  # このフレームで生まれる新しいセルを保存
             
             # 全てのセルを移動させる
@@ -138,6 +139,7 @@ def main():
                 stats = get_ecosystem_stats(cells)
                 print(f"Ecosystem: Stage1={stats[1]}, Stage2={stats[2]}, Stage3={stats[3]}, Total={len(cells)}")
         
+
         for cell in cells:
             pixel_x, pixel_y = cell.get_pixel_position()
             draw_cell_from_layout(screen, pixel_x, pixel_y, cell.stage)

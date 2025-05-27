@@ -68,6 +68,7 @@ class Cell:
         ]
 
     def move(self, grid_width, grid_height, all_cells):
+
         # Calculate new position
         new_x = self.grid_x + self.direction[0] * self.speed
         new_y = self.grid_y + self.direction[1] * self.speed
@@ -153,13 +154,16 @@ class Cell:
                         return []
                     
                     # 6. デフォルト: その他の場合は跳ね返り
+
                     if abs(dx) > abs(dy):
                         self.direction = (-self.direction[0], self.direction[1])
                     else:
                         self.direction = (self.direction[0], -self.direction[1])
+
                     return []
         
         # Update position if no collisions
         self.grid_x = new_x
         self.grid_y = new_y
+
         return []
